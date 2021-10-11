@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "workoutPlan",
+    "slug": "workoutPlan",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "workoutPlan"
+}
