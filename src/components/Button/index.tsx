@@ -6,9 +6,9 @@ interface ButtonProps {
   children: string;
 }
 
-export function Button({ children }: ButtonProps) {
+export function Button({ children, ...rest }: ButtonProps) {
   return (
-    <Container>
+    <Container {...rest} >
       <Title>{children}</Title>
     </Container>
   );

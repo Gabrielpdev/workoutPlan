@@ -2,12 +2,15 @@ import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 
+import { Switch as ComponentSwitch } from '../Switch';
+
 export const Container = styled.View`
   width: 100%;
-  height: 141px;
+  height: 151px;
   background-color: ${({theme}) => theme.colors.header};
   
-  justify-content: flex-end;
+  justify-content: ${({isInternalScreen}) => isInternalScreen  ? 'center' : 'flex-end'};
+  /* justify-content: center; */
   align-items: center;
   z-index: 2;
 `;
@@ -15,6 +18,13 @@ export const Container = styled.View`
 export const Content = styled.View`
   width: 100%;
   margin-bottom: -25px;
+`;
+
+export const BackButton = styled(RectButton)`
+  position: absolute;
+  left: 20px;
+  /* top: 80px; */
+  top: 50%;
 `;
 
 export const Title = styled.Text`
@@ -34,6 +44,12 @@ export const TrainContent = styled(ScrollView).attrs({
   width: 100%;
 `;
 
+export const Switch = styled(ComponentSwitch)`
+  position: absolute;
+  right: 20px;
+  top: 50px;
+`;
+
 export const TrainButton = styled(RectButton)`
   background-color: ${({theme, isActive}) => isActive ? theme.colors.main :  theme.colors.shape_dark};
 
@@ -41,7 +57,8 @@ export const TrainButton = styled(RectButton)`
   width: 140px;
 
   border-radius: 10px;
-  margin-right: 10px;
+  /* padding: 10px; */
+  /* margin-right: 10px; */
 
   align-items: center;
   justify-content: center;

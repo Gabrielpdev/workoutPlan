@@ -1,27 +1,44 @@
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { RectButton } from 'react-native-gesture-handler';
+import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled(RectButton)`
   width: 100%;
-  background-color: ${({theme}) => theme.colors.background_secondary};
+  background-color: ${({theme, isCompleted}) => isCompleted ? theme.colors.success_light : theme.colors.background_secondary};
   padding: 15px;
   border-radius: 6px;
+  border: 0;
   margin-bottom: 10px;
 `;
 
 export const Header  = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-`;
-
-export const Title = styled.Text`
-  color: ${({theme}) => theme.colors.text};
-
-  font-size: ${RFValue(20)}px;
-  font-family: ${({theme}) => theme.fonts.secondary_600};
 
   margin-bottom: 15px;
 `;
+
+export const Title = styled.Text`
+  color: ${({theme, isCompleted}) => isCompleted ? theme.colors.success: theme.colors.text};
+
+  font-size: ${RFValue(20)}px;
+  font-family: ${({theme}) => theme.fonts.secondary_600};
+`;
+
+export const ButtonsContent = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  position: absolute;
+  width: 60px;
+  right: 0px;
+`;
+
+export const DeleteButton = styled(BorderlessButton)``;
+
+export const EditButton = styled(BorderlessButton)``;
 
 export const ContentWrapper = styled.View`
   flex-direction: row;
@@ -37,14 +54,14 @@ export const ContentData = styled.View`
 `;
 
 export const ContentDataTitle = styled.Text`
-  color: ${({theme}) => theme.colors.text};
+  color: ${({theme, isCompleted}) => isCompleted ? theme.colors.success: theme.colors.text};
 
   font-size: ${RFValue(14)}px;
   font-family: ${({theme}) => theme.fonts.secondary_500};
 `;
 
 export const ContentDataText = styled.Text`
-  color: ${({theme}) => theme.colors.text};
+  color: ${({theme, isCompleted}) => isCompleted ? theme.colors.success: theme.colors.text};
 
   font-size: ${RFValue(12)}px;
   font-family: ${({theme}) => theme.fonts.secondary_400};

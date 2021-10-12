@@ -1,5 +1,8 @@
 import React  from 'react';
 import { View } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { useTheme } from 'styled-components';
+
 // import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // import { StackParamList } from '../../routes/stack.routes';
@@ -9,7 +12,10 @@ import { View } from 'react-native';
 import { 
   Container, 
   Header, 
-  Title, 
+  Title,
+  ButtonsContent,
+  DeleteButton,
+  EditButton,
   ContentWrapper,
   ContentData,
   ContentDataTitle,
@@ -17,23 +23,18 @@ import {
  } from './styles';
 
 // type homeScreenProp = NativeStackNavigationProp<StackParamList, 'Home'>;
-let lastPress = 0;
 
-export function CardTraining() {
-  const onDoublePress = () => {
-    const time = new Date().getTime();
-    const delta = time - lastPress;
-
-    const DOUBLE_PRESS_DELAY = 300;
-    if (delta < DOUBLE_PRESS_DELAY) {
-      // Success double press
-      console.log('double press');
-    }
-    lastPress = time;
-};
+export function CardTraining({
+  data,
+  onDoublePress,
+  isEditMode,
+  isCompleted
+}) {
+  const theme = useTheme();
 
   return (
     <Container
+      isCompleted={isCompleted}
       onPress={onDoublePress}
       style={{
         shadowColor: '#000',
@@ -49,23 +50,53 @@ export function CardTraining() {
     >
       <View>
         <Header>
-          <Title>SUPINO RETO</Title>
+          <MaterialCommunityIcons 
+            name="checkbox-marked-circle-outline" 
+            size={25} 
+            color={isCompleted ? theme.colors.success : 'transparent'} 
+          />
+
+          <Title isCompleted={isCompleted}>SUPINO RETO</Title>
+
+          {isEditMode && (
+            <ButtonsContent>
+              <EditButton
+                onPress={() => {console.log('123')}}
+              >
+                <MaterialCommunityIcons 
+                  name="circle-edit-outline" 
+                  size={25} 
+                  color="#dba904"
+                />
+              </EditButton>
+              <DeleteButton
+                onPress={() => {console.log('123')}}
+              >
+                <MaterialCommunityIcons 
+                  name="delete-circle-outline" 
+                  size={28} 
+                  color="#d9435c" 
+                />
+              </DeleteButton>
+            </ButtonsContent>
+          )}
+          <View style={{ height: 25, width: 25 }} />
         </Header>
       
         <ContentWrapper>
           <ContentData>
-            <ContentDataTitle>PESO</ContentDataTitle>
-            <ContentDataText>13 kg</ContentDataText>
+            <ContentDataTitle isCompleted={isCompleted}>PESO</ContentDataTitle>
+            <ContentDataText isCompleted={isCompleted}>13 kg</ContentDataText>
           </ContentData>
 
           <ContentData>
-            <ContentDataTitle>REPETIÇÕES</ContentDataTitle>
-            <ContentDataText>13</ContentDataText>
+            <ContentDataTitle isCompleted={isCompleted}>REPETIÇÕES</ContentDataTitle>
+            <ContentDataText isCompleted={isCompleted}>13</ContentDataText>
           </ContentData>
 
           <ContentData>
-            <ContentDataTitle>SERIES</ContentDataTitle>
-            <ContentDataText>4</ContentDataText>
+            <ContentDataTitle isCompleted={isCompleted}>SERIES</ContentDataTitle>
+            <ContentDataText isCompleted={isCompleted}>4</ContentDataText>
           </ContentData>
         </ContentWrapper>
       </View>
