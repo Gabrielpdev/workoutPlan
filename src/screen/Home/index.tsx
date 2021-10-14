@@ -7,7 +7,14 @@ import { StackParamList } from '../../router/stack.routes';
 import { Header } from '../../components/Header';
 import { CardTraining } from '../../components/CardTraining';
 
-import { Container, Content, Button, Footer } from './styles';
+import { 
+  Container, 
+  Content, 
+  Button, 
+  Footer, 
+  NoTrainingSelectedMessage,
+  NoExerciseMessage
+} from './styles';
 import { useTraining } from '../../hooks/training';
 
 type homeScreenProp = NativeStackNavigationProp<StackParamList, 'Home'>;
@@ -24,7 +31,7 @@ export function Home() {
   const navigation = useNavigation<homeScreenProp>();
   const { trainingSelected, completeExercise } = useTraining();
 
-  const onDoublePress = (id) => {
+  const onDoublePress = (id: string) => {
     const time = new Date().getTime();
     const delta = time - lastPress;
 
@@ -41,25 +48,33 @@ export function Home() {
     navigation.navigate('CreateExercise');
   }
 
-  console.log(trainingSelected)
-
   return (
     <Container>
       <Header title='Treinos' isEnabled={isEnabled} toggleSwitch={toggleSwitch} />
 
-      <Content
-        showsVerticalScrollIndicator={false} 
-        data={trainingSelected.exercises}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item, index }) => (
-          <CardTraining
-            data={item}
-            onDoublePress={onDoublePress}
-            isEditMode={isEnabled}
-            isCompleted={item.isCompleted}
-          />
-        )}
-      />
+      {!trainingSelected.id ? (
+        <NoTrainingSelectedMessage>
+          Nenhum treino selecionado
+        </NoTrainingSelectedMessage>
+      ) : trainingSelected?.exercises?.length === 0 ? (
+        <NoExerciseMessage>
+          Nenhum exercício cadastrado
+        </NoExerciseMessage>
+      )  : (
+        <Content
+          showsVerticalScrollIndicator={false} 
+          data={trainingSelected.exercises}
+          keyExtractor={(item) => String(item.id)}
+          renderItem={({ item }) => (
+            <CardTraining
+              data={item}
+              onDoublePress={onDoublePress}
+              isEditMode={isEnabled}
+              isCompleted={item.isCompleted}
+            />
+          )}
+        />
+      )}
 
       {isEnabled && (
         <Footer>

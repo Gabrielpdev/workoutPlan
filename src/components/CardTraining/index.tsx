@@ -1,13 +1,11 @@
 import React  from 'react';
-import { View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Alert, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { useTheme } from 'styled-components';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-// import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-// import { StackParamList } from '../../routes/stack.routes';
-
-// import Header from '../../components/Header';
+import { StackParamList } from '../../router/stack.routes';
 
 import { 
   Container, 
@@ -21,8 +19,18 @@ import {
   ContentDataTitle,
   ContentDataText,
  } from './styles';
+import { useTraining } from '../../hooks/training';
 
-// type homeScreenProp = NativeStackNavigationProp<StackParamList, 'Home'>;
+type cardTrainingScreenProp = NativeStackNavigationProp<StackParamList, 'CreateExercise'>;
+
+interface ExerciseProps {
+  id: string;
+  title: string;
+  weight: string;
+  repeat: string;
+  series: string;
+  time: string;
+}
 
 export function CardTraining({
   data,
@@ -30,7 +38,37 @@ export function CardTraining({
   isEditMode,
   isCompleted
 }) {
+  const { deleteExercise } = useTraining();
   const theme = useTheme();
+  const navigation = useNavigation<cardTrainingScreenProp>();
+
+  function handleDeleteExercise(id: string, name: string){
+    Alert.alert(
+      `Deseja deletar ${name}`,
+      `Deseja realmente deletar este exercício`,
+      [
+        {
+          text: "Cancel",
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => deleteExercise(id),
+          style: "cancel",
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () => {}
+      }
+    );
+    
+  }
+
+  function handleEditExercise(exercise: ExerciseProps){
+    navigation.navigate('CreateExercise', { exercise });
+  }
 
   return (
     <Container
@@ -61,7 +99,7 @@ export function CardTraining({
           {isEditMode && (
             <ButtonsContent>
               <EditButton
-                onPress={() => {console.log('123')}}
+                onPress={() => handleEditExercise(data)}
               >
                 <MaterialCommunityIcons 
                   name="circle-edit-outline" 
@@ -70,7 +108,7 @@ export function CardTraining({
                 />
               </EditButton>
               <DeleteButton
-                onPress={() => {console.log('123')}}
+                onPress={() => handleDeleteExercise(data.id, data.name)}
               >
                 <MaterialCommunityIcons 
                   name="delete-circle-outline" 

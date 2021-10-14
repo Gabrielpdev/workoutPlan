@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StackParamList } from '../../router/stack.routes';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import { v1 } from 'uuid';
 
 import { useTraining } from '../../hooks/training';
@@ -20,9 +20,22 @@ const schema = Yup.object().shape({
   .required('Nome é obrigatório'),
  })
 
- type createExerciseScreenProp = NativeStackNavigationProp<StackParamList, 'Home'>;
+type createExerciseScreenProp = NativeStackNavigationProp<StackParamList, 'Home'>;
+
+interface Params {
+  exercise: {
+    id: string;
+    name: string;
+    weight: string;
+    repeat: string;
+    series: string;
+    time: string;
+  };
+}
+
 
 export function CreateExercise() {
+  const { params } = useRoute();
   const navigation = useNavigation<createExerciseScreenProp>();
   const {
     control,
@@ -32,7 +45,11 @@ export function CreateExercise() {
   } = useForm({
     resolver: yupResolver(schema)
   });
-  const { createExercise } = useTraining();
+  const { createExercise, editExercise } = useTraining();
+  
+  if(params){
+    var { exercise } = params as Params;
+  }
 
 
   function handleCreateTraining(form){
@@ -48,7 +65,15 @@ export function CreateExercise() {
       }
     }
 
-    createExercise(formattedData);
+    if(exercise){
+      editExercise({
+        isCompleted: false, 
+        ...exercise,
+        ...form
+      })
+    }else{
+      createExercise(formattedData);
+    }
     reset();
     navigation.navigate('Home')
   }
@@ -64,6 +89,7 @@ export function CreateExercise() {
           icon='format-text'
           name='name'
           type='text'
+          defaultValue={exercise?.name}
           error={errors.name && errors.name.message}
         />
         <InputForm
@@ -72,7 +98,7 @@ export function CreateExercise() {
           icon='weight-lifter'
           name='weight'
           type='number'
-          // value={weight}
+          defaultNumberValue={exercise?.weight}
         />
         <InputForm
           title="repetições"
@@ -80,7 +106,7 @@ export function CreateExercise() {
           icon='repeat'
           name='repeat'
           type='number'
-          // value={repeat}
+          defaultNumberValue={exercise?.repeat}
         />
         <InputForm
           title="series"
@@ -88,7 +114,7 @@ export function CreateExercise() {
           icon='replay'
           name='series'
           type='number'
-          // value={series}
+          defaultNumberValue={exercise?.series}
         />
         <InputForm
           title="tempo"
@@ -96,12 +122,13 @@ export function CreateExercise() {
           icon='clock-time-eight-outline'
           name='time'
           type='number'
+          defaultNumberValue={exercise?.time}
         />
 
         <Button
           onPress={handleSubmit(handleCreateTraining)}
         >
-          Criar exercício
+          {exercise ? 'Editar exercício' : 'Criar exercício'}
         </Button>
       </Content>
     </Container>

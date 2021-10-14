@@ -25,6 +25,8 @@ interface TrainingContextProps {
   createTraining: (data: Trainings[]) => void;
   createExercise: (data: Exercise) => void;
   completeExercise: (id: string) => void;
+  deleteExercise: (id: string) => void;
+  editExercise: (data: Exercise) => void;
 }
 
 interface TrainingProviderProps {
@@ -41,8 +43,6 @@ export function TrainingProvider({ children }: TrainingProviderProps){
 
   const [trainingStorageLoading, setTrainingStorageLoading] = useState(true);
 
-  // console.log(trainings)
-
   function selectedTraining(id){
     const filteredTraining = trainings.filter((training) => training.id === id)[0];
 
@@ -57,12 +57,12 @@ export function TrainingProvider({ children }: TrainingProviderProps){
   async function createExercise(data: Exercise){
     const newTrainings = trainings.map((training) => {
       if(training.id === trainingSelected.id){
-        training.exercises.push(data)
-
         setTrainingSelected({
           ...training,
           exercises: [...training.exercises, data]
         })
+        
+        training.exercises.push(data)
       }
       return training
     })
@@ -75,20 +75,7 @@ export function TrainingProvider({ children }: TrainingProviderProps){
   async function completeExercise(id: string){
     const newTrainings = trainings.map((training) => {
       if(training.id === trainingSelected.id){
-        setTrainingSelected({
-          ...training,
-          exercises: training.exercises.map(exercise => {
-            if(exercise.id === id){
-              return {
-                ...exercise,
-                isCompleted: !exercise.isCompleted
-              }
-            }
-            return exercise
-          })
-        })
-
-        return {
+        const newData = {
           ...training,
           exercises: training.exercises.map(exercise => {
             if(exercise.id === id){
@@ -100,6 +87,52 @@ export function TrainingProvider({ children }: TrainingProviderProps){
             return exercise
           })
         }
+        
+        setTrainingSelected(newData)
+        return newData
+      }
+      return training
+    })
+    
+    await AsyncStorage.setItem(dataKey, JSON.stringify(newTrainings));
+    setTrainings(newTrainings)
+  }
+
+  async function deleteExercise(id: string){
+    const newTrainings = trainings.map((training) => {
+      if(training.id === trainingSelected.id){
+        const newData = {
+          ...training,
+          exercises: training.exercises.filter(exercise => exercise.id !== id)
+        }
+
+        setTrainingSelected(newData)
+        return newData
+      }
+      return training
+    })
+    
+    await AsyncStorage.setItem(dataKey, JSON.stringify(newTrainings));
+    setTrainings(newTrainings)
+  }
+
+  async function editExercise(data: Exercise){
+    const newTrainings = trainings.map((training) => {
+      if(training.id === trainingSelected.id){
+        const newData = {
+          ...training,
+          exercises: training.exercises.map(exercise => {
+            if(exercise.id === data.id){
+              return {
+                ...data
+              }
+            }
+            return exercise
+          })
+        }
+
+        setTrainingSelected(newData)
+        return newData
       }
       return training
     })
@@ -128,7 +161,9 @@ export function TrainingProvider({ children }: TrainingProviderProps){
       selectedTraining,
       createTraining,
       createExercise,
-      completeExercise
+      completeExercise,
+      deleteExercise,
+      editExercise
     }}>
       {children}
     </TrainingContext.Provider>

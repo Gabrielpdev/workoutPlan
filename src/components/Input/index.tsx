@@ -24,13 +24,25 @@ interface InputProps extends TextInputProps{
   icon: string;
   error?: string;
   type: 'number' | 'text' ;
+  defaultValue?: string | number;
+  defaultNumberValue?: string | number
 }
 
-export function InputForm({ title, icon, control, name, type, error, ...rest }: InputProps) {
+export function InputForm({ 
+  title, 
+  icon, 
+  control, 
+  name, 
+  type, 
+  error, 
+  defaultValue = '', 
+  defaultNumberValue = 1, 
+  ...rest 
+}: InputProps) {
   const theme = useTheme()
 
   const [openModal, setOpenModal] = useState(false);
-  const [numberValue, setNumberValue] = useState(1);
+  const [numberValue, setNumberValue] = useState(defaultNumberValue);
 
   function handleModal(){
     setOpenModal(!openModal)
@@ -44,6 +56,7 @@ export function InputForm({ title, icon, control, name, type, error, ...rest }: 
         <Separator />
         {type === 'number' ? (
           <Controller
+            defaultValue={numberValue}
             name={name}
             control={control}
             render={({field: { onChange }}) => (
@@ -64,6 +77,7 @@ export function InputForm({ title, icon, control, name, type, error, ...rest }: 
           />
         ) : (
           <Controller
+            defaultValue={defaultValue}
             name={name}
             control={control}
             render={({field: { onChange, value}}) => (
