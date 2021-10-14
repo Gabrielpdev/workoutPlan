@@ -2,11 +2,11 @@ import React  from 'react';
 import { View } from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
-// import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-// import { StackParamList } from '../../routes/stack.routes';
+import { useTraining } from '../../hooks/training';
 
-// import Header from '../../components/Header';
+import { StackParamList } from '../../router/stack.routes';
 
 import { 
   Container, 
@@ -26,11 +26,19 @@ interface HeaderProps {
   toggleSwitch?: () => void;
 }
 
-// type homeScreenProp = NativeStackNavigationProp<StackParamList, 'Home'>;
+type headerScreenProp = NativeStackNavigationProp<StackParamList, 'CreateTraining'>;
 
 export function Header({ title, isInternalScreen = false, isEnabled, toggleSwitch }: HeaderProps) {
-  const navigation = useNavigation();
-  const data = [1,2,3,4,5,6]
+  const navigation = useNavigation<headerScreenProp>();
+  const { trainings, selectedTraining, trainingSelected } = useTraining();
+
+  function handleSelectTraining(id: string){
+    selectedTraining(id)
+  }
+
+  function handleCreateTraining(){
+    navigation.navigate('CreateTraining');
+  }
 
   return (
     <Container isInternalScreen={isInternalScreen}>
@@ -49,9 +57,9 @@ export function Header({ title, isInternalScreen = false, isEnabled, toggleSwitc
       <Content>
         {!isInternalScreen &&(
           <TrainContent>
-            {data.map(teste => (
+            {trainings.map(training => (
               <View
-                key={teste}
+                key={training.id}
                 style={{
                   shadowColor: '#000',
                   shadowOffset: {
@@ -68,9 +76,12 @@ export function Header({ title, isInternalScreen = false, isEnabled, toggleSwitc
                   marginRight: 10,
                 }}
               >
-                <TrainButton>
+                <TrainButton 
+                  onPress={() => handleSelectTraining(training.id)}
+                  isActive={trainingSelected.id === training.id}
+                >
                   <TrainButtonText>
-                    Treino A
+                    {training.title}
                   </TrainButtonText>
                 </TrainButton>
               </View>
@@ -93,6 +104,7 @@ export function Header({ title, isInternalScreen = false, isEnabled, toggleSwitc
             >
               <TrainButton 
                 isActive
+                onPress={handleCreateTraining}
               >
                 <TrainButtonText>
                   +

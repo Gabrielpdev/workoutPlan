@@ -1,6 +1,6 @@
 import React, { useState }  from 'react';
-import { useNavigation } from '@react-navigation/core';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
 import { StackParamList } from '../../router/stack.routes';
 
@@ -8,32 +8,40 @@ import { Header } from '../../components/Header';
 import { CardTraining } from '../../components/CardTraining';
 
 import { Container, Content, Button, Footer } from './styles';
+import { useTraining } from '../../hooks/training';
+
+type homeScreenProp = NativeStackNavigationProp<StackParamList, 'Home'>;
 
 let lastPress = 0;
-type homeScreenProp = NativeStackNavigationProp<StackParamList, 'Home'>;
+export interface DataListProps{
+  id: string;
+  title: string;
+}
 
 export function Home() {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const navigation = useNavigation<homeScreenProp>();
+  const { trainingSelected, completeExercise } = useTraining();
 
-  const data = [1,2,3,4,5,6]
-
-  const onDoublePress = () => {
+  const onDoublePress = (id) => {
     const time = new Date().getTime();
     const delta = time - lastPress;
 
     const DOUBLE_PRESS_DELAY = 300;
     if (delta < DOUBLE_PRESS_DELAY) {
       // Success double press
-      console.log('double press');
+      completeExercise(id)
+      // console.log(id);
     }
     lastPress = time;
   };
 
-  function handleAddTraining(){
-    navigation.navigate('CreateTraining');
+  function handleAddExercise(){
+    navigation.navigate('CreateExercise');
   }
+
+  console.log(trainingSelected)
 
   return (
     <Container>
@@ -41,25 +49,27 @@ export function Home() {
 
       <Content
         showsVerticalScrollIndicator={false} 
-        data={data}
-        keyExtractor={(item) => String(item)}
+        data={trainingSelected.exercises}
+        keyExtractor={(item) => String(item.id)}
         renderItem={({ item, index }) => (
           <CardTraining
             data={item}
             onDoublePress={onDoublePress}
             isEditMode={isEnabled}
-            isCompleted={index % 2 === 0}
+            isCompleted={item.isCompleted}
           />
         )}
       />
 
-      {isEnabled && (<Footer>
-        <Button
-          onPress={handleAddTraining}
-        >
-          Adicionar exercício
-        </Button>
-      </Footer>)}
+      {isEnabled && (
+        <Footer>
+          <Button
+            onPress={handleAddExercise}
+          >
+            Adicionar exercício
+          </Button>
+        </Footer>
+      )}
     </Container>
   );
 };

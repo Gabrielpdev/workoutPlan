@@ -35,7 +35,7 @@ export function CardTraining({
   return (
     <Container
       isCompleted={isCompleted}
-      onPress={onDoublePress}
+      onPress={() => onDoublePress(data.id)}
       style={{
         shadowColor: '#000',
         shadowOffset: {
@@ -56,7 +56,7 @@ export function CardTraining({
             color={isCompleted ? theme.colors.success : 'transparent'} 
           />
 
-          <Title isCompleted={isCompleted}>SUPINO RETO</Title>
+          <Title isCompleted={isCompleted}>{data.name}</Title>
 
           {isEditMode && (
             <ButtonsContent>
@@ -86,17 +86,17 @@ export function CardTraining({
         <ContentWrapper>
           <ContentData>
             <ContentDataTitle isCompleted={isCompleted}>PESO</ContentDataTitle>
-            <ContentDataText isCompleted={isCompleted}>13 kg</ContentDataText>
+            <ContentDataText isCompleted={isCompleted}>{`${data.weight} kg`}</ContentDataText>
           </ContentData>
 
           <ContentData>
             <ContentDataTitle isCompleted={isCompleted}>REPETIÇÕES</ContentDataTitle>
-            <ContentDataText isCompleted={isCompleted}>13</ContentDataText>
+            <ContentDataText isCompleted={isCompleted}>{data.repeat}</ContentDataText>
           </ContentData>
 
           <ContentData>
             <ContentDataTitle isCompleted={isCompleted}>SERIES</ContentDataTitle>
-            <ContentDataText isCompleted={isCompleted}>4</ContentDataText>
+            <ContentDataText isCompleted={isCompleted}>{data.series}</ContentDataText>
           </ContentData>
         </ContentWrapper>
       </View>

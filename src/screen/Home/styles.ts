@@ -24,5 +24,10 @@ export const Footer = styled.View`
   width: 100%;
 
   padding: 24px 16px ${getBottomSpace() + 24}px;
+`;
 
+export const LoadContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 `;

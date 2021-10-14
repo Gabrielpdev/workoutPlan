@@ -7,6 +7,7 @@ export type StackParamList = {
   Splash: undefined;
   Home: undefined;
   CreateTraining: undefined;
+  CreateExercise: undefined;
 };
 
 const { Navigator, Screen } = createNativeStackNavigator<StackParamList>();
@@ -14,6 +15,7 @@ const { Navigator, Screen } = createNativeStackNavigator<StackParamList>();
 // import { Splash } from '../screens/Splash'
 import { Home } from '../screen/Home';
 import { CreateTraining } from '../screen/CreateTraining';
+import { CreateExercise } from '../screen/CreateExercise';
 
 export function StackRoutes(){
   return(
@@ -21,6 +23,7 @@ export function StackRoutes(){
       {/* <Screen name="Splash" component={Splash} /> */}
       <Screen name="Home" component={Home} />
       <Screen name="CreateTraining" component={CreateTraining} />
+      <Screen name="CreateExercise" component={CreateExercise} />
     </Navigator>
   )
 }

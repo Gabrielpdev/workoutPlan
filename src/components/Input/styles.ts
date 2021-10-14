@@ -55,3 +55,11 @@ export const Value = styled.Text`
   font-family: ${({theme}) => theme.fonts.secondary_400};
 `;
 
+export const Error = styled.Text`
+  font-size: ${RFValue(14)}px;
+  font-family: ${({theme}) => theme.fonts.secondary_400};
+
+  color: ${({theme}) => theme.colors.main};
+
+  margin: 7px 0;
+`;

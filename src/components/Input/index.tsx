@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
+import { TextInputProps } from 'react-native';
 
 import { ModalPicker } from '../ModalPicker';
 
@@ -13,17 +14,19 @@ import {
   Input,
   OpenModal,
   Value,
+  Error,
 } from './styles';
 
-interface InputProps {
+interface InputProps extends TextInputProps{
   control : Control;
   title: string;
-  name: string;
+  name: any;
   icon: string;
+  error?: string;
   type: 'number' | 'text' ;
 }
 
-export function InputForm({ title, icon, control, name, type, ...rest }: InputProps) {
+export function InputForm({ title, icon, control, name, type, error, ...rest }: InputProps) {
   const theme = useTheme()
 
   const [openModal, setOpenModal] = useState(false);
@@ -33,18 +36,17 @@ export function InputForm({ title, icon, control, name, type, ...rest }: InputPr
     setOpenModal(!openModal)
   }
 
-
   return (
     <Container>
       <Title>{title}</Title>
       <Content>
-        <MaterialCommunityIcons name={icon} size={24} color={theme.colors.text} />
+        <MaterialCommunityIcons name={icon || 'cake'} size={24} color={theme.colors.text} />
         <Separator />
         {type === 'number' ? (
           <Controller
             name={name}
             control={control}
-            render={({field: { onChange}}) => (
+            render={({field: { onChange }}) => (
               <>
                 <OpenModal onPress={handleModal}>
                   <ModalPicker 
@@ -74,6 +76,7 @@ export function InputForm({ title, icon, control, name, type, ...rest }: InputPr
           />
         )}
       </Content>
+      {error && <Error>{error}</Error>}
     </Container>
   );
 };
