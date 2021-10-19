@@ -50,9 +50,9 @@ export function CreateExercise() {
   
   const [isEnabled, setIsEnabled] = useState(false);
 
-  const [storageWeight, setStorageWeight] = useState(null); 
-  const [storageRepeat, setStorageRepeat] = useState(null); 
-  const [storageSeries, setStorageSeries] = useState(null); 
+  const [storageWeight, setStorageWeight] = useState(200); 
+  const [storageRepeat, setStorageRepeat] = useState(30); 
+  const [storageSeries, setStorageSeries] = useState(30); 
  
   if(params){
     var { exercise } = params as Params;

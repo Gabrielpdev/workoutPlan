@@ -65,16 +65,14 @@ export function TrainingProvider({ children }: TrainingProviderProps){
       return training
     })
     
-    console.log(newTrainings)
-    // await AsyncStorage.setItem(dataKey, JSON.stringify(newTrainings));
+    await AsyncStorage.setItem(dataKey, JSON.stringify(newTrainings));
     setTrainings(newTrainings)
   }
 
   async function deleteTraining(id: string){
     const newTrainings = trainings.filter(training => training.id !== id)
     
-    console.log(newTrainings)
-    // await AsyncStorage.setItem(dataKey, JSON.stringify(newTrainings));
+    await AsyncStorage.setItem(dataKey, JSON.stringify(newTrainings));
     setTrainings(newTrainings)
   }
 

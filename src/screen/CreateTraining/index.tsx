@@ -61,7 +61,6 @@ export function CreateTraining() {
     var { trainingSelected } = params as Params;
   }
 
-  console.log(trainingSelected)
   async function handleCreateTraining(form){
     const data = await AsyncStorage.getItem(dataKey);
     const currentData = data ? JSON.parse(data) : [];

@@ -38,9 +38,7 @@ export function Home() {
 
     const DOUBLE_PRESS_DELAY = 300;
     if (delta < DOUBLE_PRESS_DELAY) {
-      // Success double press
       completeExercise(id)
-      // console.log(id);
     }
     lastPress = time;
   };
