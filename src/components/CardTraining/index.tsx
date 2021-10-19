@@ -63,7 +63,6 @@ export function CardTraining({
         onDismiss: () => {}
       }
     );
-    
   }
 
   function handleEditExercise(exercise: ExerciseProps){
@@ -137,6 +136,13 @@ export function CardTraining({
             <ContentDataText isCompleted={isCompleted}>{data.series}</ContentDataText>
           </ContentData>
         </ContentWrapper>
+
+         {!!data.observation && ( 
+          <ContentData style={{marginTop: 10}} >
+            <ContentDataTitle isCompleted={isCompleted}>OBSERVAÇÃO</ContentDataTitle>
+            <ContentDataText isCompleted={isCompleted}>{data.observation}</ContentDataText>
+          </ContentData>
+        )}
       </View>
     </Container>
   );

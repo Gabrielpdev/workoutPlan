@@ -7,11 +7,27 @@ export const Container = styled.View`
   margin-top: 10px;
 `;
 
+export const TitleContainer = styled.View`
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+
+  padding-right: 5px;
+`;
+
 export const Title = styled.Text`
   color: ${({theme}) => theme.colors.text};
   text-transform: uppercase;
 
   font-size: ${RFValue(16)}px;
+  font-family: ${({theme}) => theme.fonts.secondary_600};
+`;
+
+export const MaxNumber = styled.Text`
+  color: ${({theme}) => theme.colors.text};
+  text-transform: capitalize;
+
+  font-size: ${RFValue(10)}px;
   font-family: ${({theme}) => theme.fonts.secondary_600};
 `;
 
@@ -34,16 +50,15 @@ export const Separator = styled.View`
 `;
 
 export const Input = styled(TextInput)`
-  /* background-color: ${({theme}) => theme.colors.main}; */
   width: 100%;
   
   padding: 18px;
 `;
 
 export const OpenModal = styled(RectButton)`
-  width: 100%;
+  width: 65%;
   height: 60px;
-
+  
   justify-content: center;
 `;
 

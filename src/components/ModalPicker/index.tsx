@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Text } from 'react-native';
 import ScrollPicker from 'react-native-wheel-scrollview-picker';
 
 import { Container, CustomModalContainer, Modal } from './styles';
 
-// interface ModalPickerProps {
-//   children: ReactNode;
-// }
-
-const data = Array.from({ length: 100 }, (v, k) => k + 1);
-
 export function ModalPicker({
   active,
   onActive,
-  onChangeValue
+  onChangeValue,
+  defaultValue,
+  maxNumber
 }) {
+  const data = useMemo(() => {
+    if(maxNumber <= 0 ){
+      return [0];
+    }else if (maxNumber > 500) {
+      return Array.from({ length: 500 }, (_, k) => k + 1)
+    } else {
+      return Array.from({ length: maxNumber }, (_, k) => k + 1)
+    }
+  },[maxNumber])
+
   return (
     <Modal
       transparent
@@ -28,19 +34,18 @@ export function ModalPicker({
       <Container>
         <ScrollPicker
           dataSource={data}
-          selectedIndex={1}
+          selectedIndex={defaultValue ? Number(defaultValue) - 1 : 0}
           renderItem={(data) => (
             <Text>{data}</Text>
           )}
           onValueChange={(data) => {
             onChangeValue(data)
           }}
-          // wrapperBackground='#FFFFFF'
-          itemHeight={50}
+          itemHeight={45}
           highlightColor='#d8d8d8'
-          highlightBorderWidth={2}
+          wrapperColor='#fff'
+          highlightBorderWidth={4}
         />
-        {/* <Text>ModalPicker</Text> */}
       </Container>
     </Modal>
   );

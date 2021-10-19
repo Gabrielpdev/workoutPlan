@@ -1,6 +1,7 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect }  from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
+import { BackHandler } from 'react-native';
 
 import { StackParamList } from '../../router/stack.routes';
 
@@ -48,9 +49,20 @@ export function Home() {
     navigation.navigate('CreateExercise');
   }
 
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      return true;
+    });
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', () => {
+        return true;
+      });
+    };
+  },[])
+
   return (
     <Container>
-      <Header title='Treinos' isEnabled={isEnabled} toggleSwitch={toggleSwitch} />
+      <Header allowEditable isEnabled={isEnabled} toggleSwitch={toggleSwitch} />
 
       {!trainingSelected.id ? (
         <NoTrainingSelectedMessage>
@@ -76,7 +88,7 @@ export function Home() {
         />
       )}
 
-      {isEnabled && (
+      {isEnabled && trainingSelected.id && (
         <Footer>
           <Button
             onPress={handleAddExercise}

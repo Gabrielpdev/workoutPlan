@@ -16,12 +16,13 @@ const { Navigator, Screen } = createNativeStackNavigator<StackParamList>();
 import { Home } from '../screen/Home';
 import { CreateTraining } from '../screen/CreateTraining';
 import { CreateExercise } from '../screen/CreateExercise';
+import { Splash } from '../screen/Splash';
 
 export function StackRoutes(){
   return(
-    <Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
-      {/* <Screen name="Splash" component={Splash} /> */}
-      <Screen name="Home" component={Home} />
+    <Navigator screenOptions={{ headerShown: false }} initialRouteName="Splash">
+      <Screen name="Splash" component={Splash} />
+      <Screen name="Home" component={Home} options={{ gestureEnabled: false }} />
       <Screen name="CreateTraining" component={CreateTraining} />
       <Screen name="CreateExercise" component={CreateExercise} />
     </Navigator>

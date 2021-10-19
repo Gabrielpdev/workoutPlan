@@ -2,12 +2,13 @@ import styled from 'styled-components/native';
 import { Modal as ModalRN } from 'react-native';
 
 export const Modal = styled(ModalRN)`
-  background: blue;
 `;
 
 export const Container = styled.View`
-  background: red;
   position: absolute;
+  background: white;
+  padding: 20px 0;
+  border-radius: 10px;
 
   /* align-items: center; */
   /* justify-content: center; */

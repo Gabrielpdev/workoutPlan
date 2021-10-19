@@ -11,3 +11,11 @@ export const Content = styled.View`
 export const Button = styled(ConfirmButton)`
   margin-top: 20px;
 `;
+
+export const DeleteContent = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
+export const DeleteContentText = styled.Text``;

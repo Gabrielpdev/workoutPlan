@@ -66,3 +66,13 @@ export const ContentDataText = styled.Text`
   font-size: ${RFValue(12)}px;
   font-family: ${({theme}) => theme.fonts.secondary_400};
 `;
+
+// export const ObservationWrapper = styled.Text`
+//   width: 100%;
+//   align-items: center;
+//   justify-content: center;
+//   flex-direction: column;
+
+//   margin-top: 10px;
+//   text-align: center;
+// `;

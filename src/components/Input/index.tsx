@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
-import { TextInputProps } from 'react-native';
+import { ActivityIndicator, TextInputProps } from 'react-native';
 
 import { ModalPicker } from '../ModalPicker';
 
 import { 
   Container,
+  TitleContainer,
+  MaxNumber,
   Title,
   Content,
   Separator,
@@ -24,8 +26,11 @@ interface InputProps extends TextInputProps{
   icon: string;
   error?: string;
   type: 'number' | 'text' ;
-  defaultValue?: string | number;
-  defaultNumberValue?: string | number
+  defaultValue?: string;
+  defaultNumberValue?: string | number;
+  maxNumber?: number;
+  onChangeMaxNumber?: (type: string, value: string) => Promise<void>;
+  isEditable?: boolean;
 }
 
 export function InputForm({ 
@@ -36,7 +41,10 @@ export function InputForm({
   type, 
   error, 
   defaultValue = '', 
-  defaultNumberValue = 1, 
+  defaultNumberValue = 1,
+  maxNumber,
+  onChangeMaxNumber,
+  isEditable = false,
   ...rest 
 }: InputProps) {
   const theme = useTheme()
@@ -44,17 +52,24 @@ export function InputForm({
   const [openModal, setOpenModal] = useState(false);
   const [numberValue, setNumberValue] = useState(defaultNumberValue);
 
+  const [isLoading, setIsLoading] = useState(false);
+  
   function handleModal(){
+    setIsLoading(!isLoading)
     setOpenModal(!openModal)
   }
 
   return (
     <Container>
-      <Title>{title}</Title>
+      <TitleContainer>
+        <Title>{title}</Title>
+        {!!maxNumber && (<MaxNumber>{`max: ${maxNumber}`}</MaxNumber>)}
+      </TitleContainer>
       <Content>
         <MaterialCommunityIcons name={icon || 'cake'} size={24} color={theme.colors.text} />
         <Separator />
         {type === 'number' ? (
+          <>
           <Controller
             defaultValue={numberValue}
             name={name}
@@ -62,7 +77,9 @@ export function InputForm({
             render={({field: { onChange }}) => (
               <>
                 <OpenModal onPress={handleModal}>
-                  <ModalPicker 
+                  <ModalPicker
+                    maxNumber={maxNumber}
+                    defaultValue={numberValue}
                     active={openModal}
                     onActive={handleModal}
                     onChangeValue={(value) => {
@@ -70,11 +87,28 @@ export function InputForm({
                       onChange(value);
                     }}
                   />
-                  <Value>{name === 'weight' ? `${numberValue} kg` : numberValue}</Value>
+                  {isLoading ? (
+                    <ActivityIndicator size="small" color={theme.colors.text} />
+                  ) : (
+                    <Value>{name === 'weight' ? `${numberValue} kg` : numberValue}</Value>
+                  )}
                 </OpenModal>
               </>
             )}
           />
+          {isEditable && (
+            <>
+              <Separator />
+              <Input
+                keyboardType="numeric"
+                value={maxNumber?.toString()}
+                onChangeText={onChangeMaxNumber}
+                style={{ height: 60}}
+                {...rest}
+              />
+            </>
+          )}
+          </>
         ) : (
           <Controller
             defaultValue={defaultValue}
@@ -88,7 +122,7 @@ export function InputForm({
               />
             )}
           />
-        )}
+        )}        
       </Content>
       {error && <Error>{error}</Error>}
     </Container>

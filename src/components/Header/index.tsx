@@ -1,12 +1,15 @@
 import React  from 'react';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useTraining } from '../../hooks/training';
 
 import { StackParamList } from '../../router/stack.routes';
+
+import logo from '../../assets/logo-header.png'
 
 import { 
   Container, 
@@ -20,15 +23,16 @@ import {
 } from './styles';
 
 interface HeaderProps {
-  title: string;
+  title?: string;
   isInternalScreen?: boolean;
   isEnabled?: boolean;
+  allowEditable?: boolean;
   toggleSwitch?: () => void;
 }
 
 type headerScreenProp = NativeStackNavigationProp<StackParamList, 'CreateTraining'>;
 
-export function Header({ title, isInternalScreen = false, isEnabled, toggleSwitch }: HeaderProps) {
+export function Header({ title, isInternalScreen = false, allowEditable = false,isEnabled, toggleSwitch }: HeaderProps) {
   const navigation = useNavigation<headerScreenProp>();
   const { trainings, selectedTraining, trainingSelected } = useTraining();
 
@@ -47,9 +51,15 @@ export function Header({ title, isInternalScreen = false, isEnabled, toggleSwitc
           <SimpleLineIcons name="arrow-left" size={20} color="white" />
         </BackButton>
       )}
-      <Title >{title}</Title>
+      <View>
+        {title ? (
+          <Title>{title}</Title>
+        ) : (
+          <Image source={logo} style={{ marginBottom: 10 }}/>
+        )} 
+      </View>
 
-      {!isInternalScreen && (<Switch 
+      {allowEditable && (<Switch 
         isEnabled={isEnabled}
         toggleSwitch={toggleSwitch}
       />)}
@@ -76,14 +86,19 @@ export function Header({ title, isInternalScreen = false, isEnabled, toggleSwitc
                   marginRight: 10,
                 }}
               >
-                <TrainButton 
-                  onPress={() => handleSelectTraining(training.id)}
-                  isActive={trainingSelected.id === training.id}
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onLongPress={() => navigation.navigate('CreateTraining', {trainingSelected: training})}
                 >
-                  <TrainButtonText>
-                    {training.title}
-                  </TrainButtonText>
-                </TrainButton>
+                  <TrainButton
+                    onPress={() => handleSelectTraining(training.id)}
+                    isActive={trainingSelected.id === training.id}
+                  >
+                    <TrainButtonText>
+                      {training.title}
+                    </TrainButtonText>
+                  </TrainButton>
+                </TouchableOpacity>
               </View>
             ))}
             <View

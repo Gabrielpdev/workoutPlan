@@ -6,11 +6,10 @@ import { Switch as ComponentSwitch } from '../Switch';
 
 export const Container = styled.View`
   width: 100%;
-  height: 151px;
+  height: 161px;
   background-color: ${({theme}) => theme.colors.header};
   
   justify-content: ${({isInternalScreen}) => isInternalScreen  ? 'center' : 'flex-end'};
-  /* justify-content: center; */
   align-items: center;
   z-index: 2;
 `;
@@ -23,7 +22,6 @@ export const Content = styled.View`
 export const BackButton = styled(RectButton)`
   position: absolute;
   left: 20px;
-  /* top: 80px; */
   top: 50%;
 `;
 

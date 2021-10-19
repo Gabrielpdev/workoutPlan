@@ -23,6 +23,8 @@ interface TrainingContextProps {
   trainingStorageLoading: boolean
   selectedTraining: (id: string) => void;
   createTraining: (data: Trainings[]) => void;
+  editTraining: (data: Trainings) => void;
+  deleteTraining: (id: string) => void;
   createExercise: (data: Exercise) => void;
   completeExercise: (id: string) => void;
   deleteExercise: (id: string) => void;
@@ -52,6 +54,28 @@ export function TrainingProvider({ children }: TrainingProviderProps){
   async function createTraining(data){
     await AsyncStorage.setItem(dataKey, JSON.stringify(data));
     setTrainings(data)
+  }
+
+  async function editTraining(data: Trainings){
+    const newTrainings = trainings.map((training) => {
+      if(training.id === trainingSelected.id){
+        setTrainingSelected({...data})
+        return {...data}
+      }
+      return training
+    })
+    
+    console.log(newTrainings)
+    // await AsyncStorage.setItem(dataKey, JSON.stringify(newTrainings));
+    setTrainings(newTrainings)
+  }
+
+  async function deleteTraining(id: string){
+    const newTrainings = trainings.filter(training => training.id !== id)
+    
+    console.log(newTrainings)
+    // await AsyncStorage.setItem(dataKey, JSON.stringify(newTrainings));
+    setTrainings(newTrainings)
   }
 
   async function createExercise(data: Exercise){
@@ -160,10 +184,12 @@ export function TrainingProvider({ children }: TrainingProviderProps){
       trainingStorageLoading,
       selectedTraining,
       createTraining,
+      editTraining,
+      deleteTraining,
       createExercise,
       completeExercise,
       deleteExercise,
-      editExercise
+      editExercise,
     }}>
       {children}
     </TrainingContext.Provider>
