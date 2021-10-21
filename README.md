@@ -1,5 +1,5 @@
 <h2 align="center">
-    <img alt="workoutPlan" title="#workoutPlan" src=".github/logo.svg" width="350px" />
+    <img alt="workoutPlan" title="#workoutPlan" src=".github/logo.png" width="350px" />
 </h2>
   
 <p align="center">
