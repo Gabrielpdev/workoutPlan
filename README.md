@@ -1,12 +1,11 @@
 <h2 align="center">
-    <img alt="workoutPlan" title="#workoutPlan" src=".github/logo.png" width="350px" />
+    <img alt="workoutPlan" title="#workoutPlan" src=".github/logo.svg" width="350px" />
 </h2>
   
 <p align="center">
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/Gabrielpdev/workoutPlan?color=%2304D361">
 
   <img alt="Repository size" src="https://img.shields.io/github/repo-size/Gabrielpdev/workoutPlan">
-
   	
   <a href="https://www.linkedin.com/in/gabriel-pereira-oliveira-78b1801ab/">
     <img alt="Made by Gabrielpdev" src="https://img.shields.io/badge/made%20by-Gabrielpdev-%2304D361">
