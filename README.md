@@ -39,7 +39,7 @@ a seguir, um aplicativo de ficha de academia.
 
 
 <span align="center">
-	<img alt="workoutPlan" title="#workoutPlan" src=".github/mobile.gif" height="300px" />
+	<img alt="workoutPlan" title="#workoutPlan" src=".github/demo.gif" height="300px" />
 </span>
 
 ## 🏁 Iniciando <a name = "getting_started"></a>
